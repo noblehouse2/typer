@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'maven-publish'
 
 ext {
-    groupId = 'com.github.noblehouse2' // 👈 update to your GitHub username
-    libVersion = '2.0.1'
+    groupId = 'com.github.noblehouse2' // Replace with your GitHub username if needed
+    libVersion = '2.0.3' // Update this as needed
     siteUrl = 'https://github.com/noblehouse2/typer'
     gitUrl = 'https://github.com/noblehouse2/typer.git'
 }
@@ -17,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 2
-        versionName "2.0"
+        versionCode 3
+        versionName libVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -39,38 +39,38 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-version = libVersion
-group = groupId
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = groupId
+            artifactId = 'common' // module name
+            version = libVersion
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                groupId groupId
-                name 'common'
+            afterEvaluate {
+                from components.release
+            }
+
+            pom {
+                name = 'common'
                 description = 'Common code for typer'
-                url siteUrl
-
+                url = siteUrl
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'noblehouse2'
-                        name 'Noble House'
-                        email 'noblehouse@example.com'
+                        id = 'noblehouse2'
+                        name = 'Noble House'
+                        email = 'noblehouse@example.com'
                     }
                 }
-
                 scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = siteUrl
                 }
             }
         }
@@ -82,4 +82,3 @@ apply from: 'dokka-kotlin-javadoc.gradle'
 repositories {
     mavenCentral()
 }
-
