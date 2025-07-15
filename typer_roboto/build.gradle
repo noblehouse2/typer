@@ -1,16 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'kotlin-android-extensions'
 
-ext {
-    groupId = 'com.rhexgomez.typer'
-    libVersion = '2.0.0'
-    siteUrl = 'https://github.com/rhexgomez/typer'
-    gitUrl = 'https://github.com/rhexgomez/typer.git'
-}
+group = 'com.github.noblehouse2'   // ✅ Replace with your GitHub username
+version = '2.0.1'
 
 android {
     compileSdkVersion 28
@@ -19,7 +12,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 2
-        versionName "2.0.0"
+        versionName "2.0.1"
     }
 
     buildTypes {
@@ -34,76 +27,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api project(':common')
-}
-
-version = libVersion
-group = groupId                           // The groupId in `implementation`
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId groupId            // The groupId in `implementation`
-                name 'typer_roboto'        // The actual module name in your IDE
-                description = 'An easy to use Roboto font library'
-                url siteUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'rhexgomez'
-                        name 'Rhex Gomez'
-                        email 'rhexgomez@outlook.com'
-                    }
-                }
-
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
-        }
-    }
-}
-
-apply from: 'dokka-kotlin-javadoc.gradle'
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-// https://github.com/bintray/gradle-bintray-plugin
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    publish = true // True -> Publish after uploading
-
-    pkg {
-        repo = "Typer"                                      // This is the name found in Bintray {user}/{repo}/{package}
-        name = "com.rhexgomez.typer.roboto"                 // This is the package found in Bintray e.g {user}/{repo}/{package}
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-        version {
-            gpg {
-                sign = true //Determines whether to GPG sign the files. The default is false
-                passphrase = properties.getProperty("bintray.gpg.password")
-                //Optional. The passphrase for GPG signing'
-            }
-        }
-    }
+    api project(':common')   // You must also ensure the `common` module is included in the root `settings.gradle`
 }
 
 repositories {
