@@ -1,14 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'org.jetbrains.dokka-android'
-apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
-    groupId = 'com.github.noblehouse2' // Replace with your GitHub username if needed
-    libVersion = '2.0.3' // Update this as needed
-    siteUrl = 'https://github.com/noblehouse2/typer'
-    gitUrl = 'https://github.com/noblehouse2/typer.git'
+    groupId = 'com.github.noblehouse2'
+    libVersion = '2.0.3'
 }
 
 android {
@@ -17,9 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 3
-        versionName libVersion
-
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,45 +35,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = groupId
-            artifactId = 'common' // module name
-            version = libVersion
-
-            afterEvaluate {
-                from components.release
-            }
-
-            pom {
-                name = 'common'
-                description = 'Common code for typer'
-                url = siteUrl
-                licenses {
-                    license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'noblehouse2'
-                        name = 'Noble House'
-                        email = 'noblehouse@example.com'
-                    }
-                }
-                scm {
-                    connection = gitUrl
-                    developerConnection = gitUrl
-                    url = siteUrl
-                }
-            }
-        }
-    }
-}
-
-apply from: 'dokka-kotlin-javadoc.gradle'
+version = libVersion
+group = groupId
 
 repositories {
     mavenCentral()
